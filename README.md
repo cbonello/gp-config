@@ -137,7 +137,7 @@ Full API documentation is available at [godoc.org](http://godoc.org/github.com/c
 
 ## Examples
 
-Demo applications are provided in the `samples/` directory. To launch them:
+Demo applications are provided in the `examples/` directory. To launch them:
 
     go run github.com/cbonello/gp-config/examples/demo/demo.go
     go run github.com/cbonello/gp-config/examples/demo-decode/demo.go
