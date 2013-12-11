@@ -8,8 +8,7 @@ import (
 )
 
 // Decode initializes structPtr with contents of given section. Function does
-// not support circular types; it will loop forever if structPtr is passed as
-// argument.
+// not support circular types; it will loop forever.
 func (c *Configuration) Decode(section string, structPtr interface{}) (err error) {
 	if c != nil {
 		if c.IsSection(section) == false {
