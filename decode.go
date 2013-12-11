@@ -1,5 +1,3 @@
-// Copyright 2013 Christophe Bonello. All rights reserved.
-
 package config
 
 import (
