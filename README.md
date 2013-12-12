@@ -132,7 +132,7 @@ And finally, to decode:
 
 ```go
 	var db database
-	if err := cfg.Decode("server", &db); err != nil {
+	if err := cfg.Decode("database", &db); err != nil {
 		fmt.Println("error:", err)
 		os.Exit(1)
 	}
