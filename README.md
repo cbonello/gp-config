@@ -2,8 +2,8 @@
 
 ## Syntax
 
-Parser supports a subset of version
-[TOML v0.2.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.2.0.md).
+Parser supports a subset of
+[TOML v0.2.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.2.0.md) syntax.
 
 Main differences are:
 
