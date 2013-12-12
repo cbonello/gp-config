@@ -8,6 +8,7 @@ Parser supports a subset of version
 Main differences are:
 
 * section and option names are case insensitive;
+* sub-sections are not supported;
 * multi-dimensional arrays are not supported;
 * tables are not supported; and
 * array of tables are not supported.
@@ -24,6 +25,8 @@ Parser implements following grammar ([EBNF](http://en.wikipedia.org/wiki/Extende
 	value = BOOL | INT | FLOAT | DATE | STRING
 	array = '[' {EOF} value {EOF} {, {EOF} value} {EOF} ']'
 ```
+
+Parser can load as many configurations as you want, and each load can update existing options.
 
 ## Installation
 
@@ -50,7 +53,7 @@ You can also check test coverage if you're using go 1.2 or later:
 
 ### Loading Configuration Files
 
-Configuration can either be stored in a string or a file.  
+Configuration can either be stored in a string or a file.
 
 ```go
 import (
@@ -99,13 +102,15 @@ Contents of `debug.cfg` may for instance be:
 #### Basic API
 
 ```go
-	if dbname, err := config.GetString("database.dbname"); err != nil {
+	if dbname, err := cfg.GetString("database.dbname"); err != nil {
 		fmt.Printf("error: configuration: missing database name\n")
 		os.Exit(1)
 	}
-	user := config.GetStringDefault("database.dbname", "user")
-	password := config.GetStringDefault("database.dbname", "foobar")
+	user := cfg.GetStringDefault("database.dbname", "user")
+	password := cfg.GetStringDefault("database.dbname", "foobar")
 ```
+
+See `examples/demo/` for a complete demo application.
 
 Full API documentation is available at [godoc.org](http://godoc.org/github.com/cbonello/gp-config).
 
@@ -132,6 +137,8 @@ And finally, to decode:
 		os.Exit(1)
 	}
 ```
+
+See `examples/demo-decode/` for a complete demo application.
 
 Full API documentation is available at [godoc.org](http://godoc.org/github.com/cbonello/gp-config).
 
