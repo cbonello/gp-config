@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
+	"os"
 	"reflect"
 	"time"
 )
@@ -19,15 +20,18 @@ type (
 )
 
 // NewParser instanciates a parser for given configuration file.
-func NewParser(filename string) *Parser {
+func NewParser(filename string) (*Parser, error) {
 	if contents, err := ioutil.ReadFile(filename); err != nil {
-		// Ok if file does not exists.
-		return nil
+		// Ok if file does not exists but report read errors.
+		if os.IsNotExist(err) == false {
+			return nil, err
+		}
+		return nil, nil
 	} else {
 		p := &Parser{
 			lexer: NewLexer(filename, string(contents)),
 		}
-		return p
+		return p, nil
 	}
 }
 

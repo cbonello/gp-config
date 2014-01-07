@@ -80,9 +80,18 @@ func NewConfiguration() (c *Configuration) {
 
 // LoadFile loads the configuration stored in given file.
 func (c *Configuration) LoadFile(filename string) (err *ConfigurationError) {
-	if p := NewParser(filename); p != nil {
-		if err = p.Parse(c); err != nil {
-			return err
+	p, err0 := NewParser(filename)
+	if err0 != nil {
+		return &ConfigurationError{
+			Filename: filename,
+			Line:     0,
+			Column:   0,
+			msg:      err0.Error(),
+		}
+	}
+	if p != nil {
+		if err1 := p.Parse(c); err1 != nil {
+			return err1
 		}
 	}
 	return nil

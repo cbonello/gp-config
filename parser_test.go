@@ -39,9 +39,11 @@ func (pt *ParserTests) deleteTmpFile(c *C, pathname string) {
 }
 
 func (pt *ParserTests) createTestEnv(c *C, contents string) {
+	var err error
 	fn := pt.createTmpFile(c, contents)
 	pt.config = config.NewConfiguration()
-	pt.parser = config.NewParser(fn)
+	pt.parser, err = config.NewParser(fn)
+	c.Assert(err, IsNil)
 }
 
 func (pt *ParserTests) cleanTestEnv(c *C) {
@@ -49,6 +51,28 @@ func (pt *ParserTests) cleanTestEnv(c *C) {
 	pt.config = nil
 	pt.deleteTmpFile(c, pt.pathname)
 	pt.pathname = ""
+}
+
+// NewParser(): non-exisiting input file.
+func (pt *ParserTests) TestNewParser1(c *C) {
+	// Hopefully a non-existing file.
+	parser, err := config.NewParser("rumpelstilzchen")
+
+	c.Check(parser, IsNil)
+	c.Check(err, IsNil)
+}
+
+// NewParser(): non-exisiting input file.
+func (pt *ParserTests) TestNewParser2(c *C) {
+	var err error
+	fn := pt.createTmpFile(c, "foo")
+	// Remove read permission to ensure that NewParser() will fail.
+	os.Chmod(fn, 0211)
+	pt.config = config.NewConfiguration()
+	pt.parser, err = config.NewParser(fn)
+	defer pt.cleanTestEnv(c)
+
+	c.Assert(err, NotNil)
 }
 
 // Parse(): empty input file.

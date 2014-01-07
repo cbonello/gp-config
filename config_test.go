@@ -198,7 +198,7 @@ func (ct *ConfigTests) TestLoadString2(c *C) {
 	c.Check(ct.config.Len(), Equals, 10)
 }
 
-// LoadFile(): load string containing a syntax error.
+// LoadString(): load string containing a syntax error.
 // Len().
 func (ct *ConfigTests) TestLoadString3(c *C) {
 	contents := `[`
