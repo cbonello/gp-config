@@ -42,19 +42,19 @@ type (
 
 // Tokens returned by lexer.
 const (
-	TK_EOF        kind = iota // End-of-file token.
-	TK_EOL                    // End-of-line token.
-	TK_ERROR                  // An error occurred; value is error message.
-	TK_IDENTIFIER             // Identifier token.
-	TK_BOOL                   // Boolean.
-	TK_STRING                 // A string (does not include double quotes).
-	TK_INT                    // An integer.
-	TK_FLOAT                  // A floating point number.
-	TK_DATE                   // A date.
-	TK_EQUAL                  // '='.
-	TK_LBRACKET               // '['.
-	TK_RBRACKET               // ']'.
-	TK_COMMA                  // ','.
+	TkEOF        kind = iota // End-of-file token.
+	TkEOL                    // End-of-line token.
+	TkError                  // An error occurred; value is error message.
+	TkIdentifier             // Identifier token.
+	TkBool                   // Boolean.
+	TkString                 // A string (does not include double quotes).
+	TkInt                    // An integer.
+	TkFloat                  // A floating point number.
+	TkDate                   // A date.
+	TkEqual                  // '='.
+	TkLBracket               // '['.
+	TkRBracket               // ']'.
+	TkComma                  // ','.
 
 	_EOF = -1
 )
@@ -99,21 +99,21 @@ func (l *lexer) NextToken() {
 				l.parseNumber()
 			case l.c.r == '=':
 				defer l.nextRune()
-				l.setToken(TK_EQUAL, l.c.line, l.c.column, "=")
+				l.setToken(TkEqual, l.c.line, l.c.column, "=")
 			case l.c.r == '[':
 				defer l.nextRune()
-				l.setToken(TK_LBRACKET, l.c.line, l.c.column, "[")
+				l.setToken(TkLBracket, l.c.line, l.c.column, "[")
 			case l.c.r == ']':
 				defer l.nextRune()
-				l.setToken(TK_RBRACKET, l.c.line, l.c.column, "]")
+				l.setToken(TkRBracket, l.c.line, l.c.column, "]")
 			case l.c.r == ',':
 				defer l.nextRune()
-				l.setToken(TK_COMMA, l.c.line, l.c.column, ",")
+				l.setToken(TkComma, l.c.line, l.c.column, ",")
 			case l.c.r == '\n':
 				defer l.nextRune()
-				l.setToken(TK_EOL, l.c.line, l.c.column, nil)
+				l.setToken(TkEOL, l.c.line, l.c.column, nil)
 			case l.c.r == _EOF:
-				l.setToken(TK_EOF, l.c.line, l.c.column, nil)
+				l.setToken(TkEOF, l.c.line, l.c.column, nil)
 			default:
 				if unicode.IsPrint(l.c.r) {
 					l.setErrorToken("unexpected '%c' character",
@@ -218,7 +218,7 @@ func (l *lexer) skipRune(n int) {
 }
 
 func (l *lexer) setErrorToken(format string, args ...interface{}) {
-	l.Token.Kind = TK_ERROR
+	l.Token.Kind = TkError
 	l.Token.Line = l.c.line
 	l.Token.Column = l.c.column
 	l.Token.Value = fmt.Sprintf(format, args...)
@@ -261,11 +261,11 @@ func (l *lexer) parseIdentifier() {
 	id := l.contents[start.offset:l.c.offset]
 	switch id {
 	case "true":
-		l.setToken(TK_BOOL, start.line, start.column, true)
+		l.setToken(TkBool, start.line, start.column, true)
 	case "false":
-		l.setToken(TK_BOOL, start.line, start.column, false)
+		l.setToken(TkBool, start.line, start.column, false)
 	default:
-		l.setToken(TK_IDENTIFIER, start.line, start.column, id)
+		l.setToken(TkIdentifier, start.line, start.column, id)
 	}
 }
 
@@ -280,7 +280,7 @@ func (l *lexer) parseDate() bool {
 			return true
 		}
 		l.skipRune(len(d) - 1)
-		l.setToken(TK_DATE, start.line, start.column, date)
+		l.setToken(TkDate, start.line, start.column, date)
 		l.nextRune()
 		return true
 	}
@@ -288,7 +288,7 @@ func (l *lexer) parseDate() bool {
 }
 
 func (l *lexer) parseNumber() {
-	k := TK_INT
+	k := TkInt
 	start := l.c
 	sign := ""
 	digits := "0123456789"
@@ -328,7 +328,7 @@ func (l *lexer) parseNumber() {
 			digitsBeforeDot = false
 		}
 		if l.acceptOneRune(".") {
-			k = TK_FLOAT
+			k = TkFloat
 			if l.acceptManyRunes(digits, -1) == 0 {
 				// 5. is a valid floating point constant. However, it's an
 				// error if there was no digits before the '.'.
@@ -350,7 +350,7 @@ func (l *lexer) parseNumber() {
 	}
 	s := l.contents[start.offset:l.c.offset]
 	// STEP #2: use strconv to convert from string to int or float.
-	if k == TK_INT {
+	if k == TkInt {
 		if base == 16 {
 			// -0xFF is flagged as an error by ParseInt(). Number should be
 			// written as -FF.
@@ -429,7 +429,7 @@ func (l *lexer) parseString() {
 	// Removes double quotes from string.
 	qlen := utf8.RuneLen('"')
 	s := l.contents[start.offset+qlen : l.c.offset-qlen]
-	l.setToken(TK_STRING, start.line, start.column, s)
+	l.setToken(TkString, start.line, start.column, s)
 }
 
 func (l *lexer) isEOLOrEOF() bool {
@@ -446,29 +446,29 @@ func (l *lexer) isEOLOrEOF() bool {
 
 func (k kind) String() string {
 	switch k {
-	case TK_EOF:
+	case TkEOF:
 		return "eof"
-	case TK_EOL:
+	case TkEOL:
 		return "eol"
-	case TK_ERROR:
+	case TkError:
 		return "error"
-	case TK_IDENTIFIER:
+	case TkIdentifier:
 		return "identifier"
-	case TK_BOOL:
+	case TkBool:
 		return "bool"
-	case TK_STRING:
+	case TkString:
 		return "string"
-	case TK_INT:
+	case TkInt:
 		return "int64"
-	case TK_FLOAT:
+	case TkFloat:
 		return "float64"
-	case TK_DATE:
+	case TkDate:
 		return "time.Time"
-	case TK_EQUAL:
+	case TkEqual:
 		return "equal"
-	case TK_LBRACKET:
+	case TkLBracket:
 		return "lbracket"
-	case TK_RBRACKET:
+	case TkRBracket:
 		return "rbracket"
 	default:
 		return "comma"
@@ -484,30 +484,30 @@ func (t token) String() string {
 	pos := fmt.Sprintf("[%3d:%3d]", t.Line, t.Column)
 	// %-10s: IDENTIFIER is the biggest type name with 10 letters.
 	switch {
-	case t.Kind == TK_EOF:
+	case t.Kind == TkEOF:
 		return fmt.Sprintf("%-10s %s", t.Kind, pos)
-	case t.Kind == TK_EOL:
+	case t.Kind == TkEOL:
 		return fmt.Sprintf("%-10s %s", t.Kind, pos)
-	case t.Kind == TK_ERROR:
+	case t.Kind == TkError:
 		return fmt.Sprintf("%-10s %s \"%s\"", t.Kind, pos, t.Value.(string))
-	case t.Kind == TK_IDENTIFIER:
+	case t.Kind == TkIdentifier:
 		return fmt.Sprintf("%-10s %s \"%s\"", t.Kind, pos, t.Value.(string))
-	case t.Kind == TK_BOOL:
+	case t.Kind == TkBool:
 		return fmt.Sprintf("%-10s %s %t", t.Kind, pos, t.Value.(bool))
-	case t.Kind == TK_STRING:
+	case t.Kind == TkString:
 		return fmt.Sprintf("%-10s %s \"%s\"", t.Kind, pos, t.Value.(string))
-	case t.Kind == TK_INT:
+	case t.Kind == TkInt:
 		return fmt.Sprintf("%-10s %s %d", t.Kind, pos, t.Value.(int64))
-	case t.Kind == TK_FLOAT:
+	case t.Kind == TkFloat:
 		return fmt.Sprintf("%-10s %s %f)", t.Kind, pos, t.Value.(float64))
-	case t.Kind == TK_DATE:
+	case t.Kind == TkDate:
 		date := (t.Value.(time.Time)).Format(time.RFC3339)
 		return fmt.Sprintf("%-10s %s %s", t.Kind, pos, date)
-	case t.Kind == TK_EQUAL:
+	case t.Kind == TkEqual:
 		return fmt.Sprintf("%-10s %s '='", t.Kind, pos)
-	case t.Kind == TK_LBRACKET:
+	case t.Kind == TkLBracket:
 		return fmt.Sprintf("%-10s %s '['", t.Kind, pos)
-	case t.Kind == TK_RBRACKET:
+	case t.Kind == TkRBracket:
 		return fmt.Sprintf("%-10s %s ']'", t.Kind, pos)
 	default:
 		return fmt.Sprintf("%-10s %s ','", t.Kind, pos)

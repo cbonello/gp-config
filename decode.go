@@ -49,7 +49,7 @@ func (c *Configuration) doDecode(section string, val reflect.Value, typ reflect.
 
 			} else {
 				return fmt.Errorf(
-					"'%s': embedded pointer fields are not yet supported!",
+					"'%s': embedded pointer fields are not supported yet",
 					fieldType.Name)
 			}
 
@@ -110,7 +110,7 @@ func (c *Configuration) decodeSlice(path string, src *configurationValue,
 
 	srcVal := reflect.ValueOf(src.value)
 	if eltType == dateType {
-		if src.ctype != _ARRAY_TYPE|_DATE_TYPE {
+		if src.ctype != _ArrayType|_DateType {
 			return fmt.Errorf(
 				"'%s': value of type %s is not assignable to type []time.Time",
 				path, src.ctype)
@@ -123,7 +123,7 @@ func (c *Configuration) decodeSlice(path string, src *configurationValue,
 	} else {
 		switch eltType.Kind() {
 		case boolType:
-			if src.ctype != _ARRAY_TYPE|_BOOL_TYPE {
+			if src.ctype != _ArrayType|_BoolType {
 				return fmt.Errorf("'%s': value of type %s is not assignable to type []bool",
 					path, src.ctype)
 			}
@@ -133,7 +133,7 @@ func (c *Configuration) decodeSlice(path string, src *configurationValue,
 			}
 			dst.Set(reflect.ValueOf(a))
 		case intType:
-			if src.ctype != _ARRAY_TYPE|_INT_TYPE {
+			if src.ctype != _ArrayType|_IntType {
 				return fmt.Errorf("'%s': value of type %s is not assignable to type []int64", path,
 					src.ctype)
 			}
@@ -143,7 +143,7 @@ func (c *Configuration) decodeSlice(path string, src *configurationValue,
 			}
 			dst.Set(reflect.ValueOf(a))
 		case floatType:
-			if src.ctype != _ARRAY_TYPE|_FLOAT_TYPE {
+			if src.ctype != _ArrayType|_FloatType {
 				return fmt.Errorf("'%s': value of type %s is not assignable to type []float64", path,
 					src.ctype)
 			}
@@ -153,7 +153,7 @@ func (c *Configuration) decodeSlice(path string, src *configurationValue,
 			}
 			dst.Set(reflect.ValueOf(a))
 		case stringType:
-			if src.ctype != _ARRAY_TYPE|_STRING_TYPE {
+			if src.ctype != _ArrayType|_StringType {
 				return fmt.Errorf("'%s': value of type %s is not assignable to type []string", path,
 					src.ctype)
 			}
@@ -176,7 +176,7 @@ func (c *Configuration) decodeSlice(path string, src *configurationValue,
 
 func (c *Configuration) decodeValue(path string, src *configurationValue, dst reflect.Value) error {
 	if dst.Type() == dateType {
-		if src.ctype != _DATE_TYPE {
+		if src.ctype != _DateType {
 			return fmt.Errorf(
 				"'%s': value of type %s is not assignable to type time.Time", path,
 				src.ctype)
@@ -185,28 +185,28 @@ func (c *Configuration) decodeValue(path string, src *configurationValue, dst re
 	} else {
 		switch dst.Kind() {
 		case boolType:
-			if src.ctype != _BOOL_TYPE {
+			if src.ctype != _BoolType {
 				return fmt.Errorf(
 					"'%s': value of type %s is not assignable to type bool", path,
 					src.ctype)
 			}
 			dst.SetBool(src.value.(bool))
 		case intType:
-			if src.ctype != _INT_TYPE {
+			if src.ctype != _IntType {
 				return fmt.Errorf(
 					"'%s': value of type %s is not assignable to type int64", path,
 					src.ctype)
 			}
 			dst.SetInt(src.value.(int64))
 		case floatType:
-			if src.ctype != _FLOAT_TYPE {
+			if src.ctype != _FloatType {
 				return fmt.Errorf(
 					"'%s': value of type %s is not assignable to type float64", path,
 					src.ctype)
 			}
 			dst.SetFloat(src.value.(float64))
 		case stringType:
-			if src.ctype != _STRING_TYPE {
+			if src.ctype != _StringType {
 				return fmt.Errorf(
 					"'%s': value of type %s is not assignable to type string", path,
 					src.ctype)

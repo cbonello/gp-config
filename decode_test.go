@@ -459,7 +459,7 @@ func (ct *DecodeTests) TestDecode15(c *C) {
 	err := ct.config.Decode("", &v)
 	c.Check(err, NotNil)
 	c.Check(err, ErrorMatches,
-		"'otherValues': embedded pointer fields are not yet supported!")
+		"'otherValues': embedded pointer fields are not supported yet")
 }
 
 // Decode(): StructTags.

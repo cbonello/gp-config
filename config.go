@@ -50,12 +50,12 @@ type (
 )
 
 const (
-	_ARRAY_TYPE  configurationType = 1
-	_BOOL_TYPE                     = 2
-	_INT_TYPE                      = 4
-	_FLOAT_TYPE                    = 8
-	_DATE_TYPE                     = 16
-	_STRING_TYPE                   = 32
+	_ArrayType  configurationType = 1
+	_BoolType                     = 2
+	_IntType                      = 4
+	_FloatType                    = 8
+	_DateType                     = 16
+	_StringType                   = 32
 )
 
 var (
@@ -200,7 +200,7 @@ func (c *Configuration) Get(option string) (interface{}, error) {
 func (c *Configuration) GetBool(option string) (bool, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _BOOL_TYPE {
+			if opt.ctype == _BoolType {
 				return opt.value.(bool), nil
 			}
 			return false, fmt.Errorf("'%s': not a boolean", option)
@@ -214,7 +214,7 @@ func (c *Configuration) GetBool(option string) (bool, error) {
 func (c *Configuration) GetBoolDefault(option string, dfault bool) bool {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _BOOL_TYPE {
+			if opt.ctype == _BoolType {
 				return opt.value.(bool)
 			}
 		}
@@ -227,7 +227,7 @@ func (c *Configuration) GetBoolDefault(option string, dfault bool) bool {
 func (c *Configuration) GetInt(option string) (int64, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _INT_TYPE {
+			if opt.ctype == _IntType {
 				return opt.value.(int64), nil
 			}
 			return 0, fmt.Errorf("'%s': not an integer", option)
@@ -241,7 +241,7 @@ func (c *Configuration) GetInt(option string) (int64, error) {
 func (c *Configuration) GetIntDefault(option string, dfault int64) int64 {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _INT_TYPE {
+			if opt.ctype == _IntType {
 				return opt.value.(int64)
 			}
 		}
@@ -255,7 +255,7 @@ func (c *Configuration) GetIntDefault(option string, dfault int64) int64 {
 func (c *Configuration) GetFloat(option string) (float64, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _FLOAT_TYPE {
+			if opt.ctype == _FloatType {
 				return opt.value.(float64), nil
 			}
 			return 0, fmt.Errorf("'%s': not a floating-point number", option)
@@ -269,7 +269,7 @@ func (c *Configuration) GetFloat(option string) (float64, error) {
 func (c *Configuration) GetFloatDefault(option string, dfault float64) float64 {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _FLOAT_TYPE {
+			if opt.ctype == _FloatType {
 				return opt.value.(float64)
 			}
 		}
@@ -282,7 +282,7 @@ func (c *Configuration) GetFloatDefault(option string, dfault float64) float64 {
 func (c *Configuration) GetDate(option string) (time.Time, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _DATE_TYPE {
+			if opt.ctype == _DateType {
 				return opt.value.(time.Time), nil
 			}
 			return time.Now(), fmt.Errorf("'%s': not a date", option)
@@ -296,7 +296,7 @@ func (c *Configuration) GetDate(option string) (time.Time, error) {
 func (c *Configuration) GetDateDefault(option string, dfault time.Time) time.Time {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _DATE_TYPE {
+			if opt.ctype == _DateType {
 				return opt.value.(time.Time)
 			}
 		}
@@ -309,7 +309,7 @@ func (c *Configuration) GetDateDefault(option string, dfault time.Time) time.Tim
 func (c *Configuration) GetString(option string) (string, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _STRING_TYPE {
+			if opt.ctype == _StringType {
 				return opt.value.(string), nil
 			}
 			return "", fmt.Errorf("'%s': not a string", option)
@@ -323,7 +323,7 @@ func (c *Configuration) GetString(option string) (string, error) {
 func (c *Configuration) GetStringDefault(option string, dfault string) string {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _STRING_TYPE {
+			if opt.ctype == _StringType {
 				return opt.value.(string)
 			}
 		}
@@ -337,7 +337,7 @@ func (c *Configuration) GetStringDefault(option string, dfault string) string {
 func (c *Configuration) GetBoolArray(option string) ([]bool, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_BOOL_TYPE {
+			if opt.ctype == _ArrayType|_BoolType {
 				return opt.value.([]bool), nil
 			}
 			return nil, fmt.Errorf("'%s': not an array of booleans", option)
@@ -351,7 +351,7 @@ func (c *Configuration) GetBoolArray(option string) ([]bool, error) {
 func (c *Configuration) GetBoolArrayDefault(option string, dfault []bool) []bool {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_BOOL_TYPE {
+			if opt.ctype == _ArrayType|_BoolType {
 				return opt.value.([]bool)
 			}
 		}
@@ -365,7 +365,7 @@ func (c *Configuration) GetBoolArrayDefault(option string, dfault []bool) []bool
 func (c *Configuration) GetIntArray(option string) ([]int64, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_INT_TYPE {
+			if opt.ctype == _ArrayType|_IntType {
 				return opt.value.([]int64), nil
 			}
 			return nil, fmt.Errorf("'%s': not an array of integers", option)
@@ -379,7 +379,7 @@ func (c *Configuration) GetIntArray(option string) ([]int64, error) {
 func (c *Configuration) GetIntArrayDefault(option string, dfault []int64) []int64 {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_INT_TYPE {
+			if opt.ctype == _ArrayType|_IntType {
 				return opt.value.([]int64)
 			}
 		}
@@ -393,7 +393,7 @@ func (c *Configuration) GetIntArrayDefault(option string, dfault []int64) []int6
 func (c *Configuration) GetFloatArray(option string) ([]float64, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_FLOAT_TYPE {
+			if opt.ctype == _ArrayType|_FloatType {
 				return opt.value.([]float64), nil
 			}
 			return nil, fmt.Errorf("'%s': not an array of floating-point numbers", option)
@@ -407,7 +407,7 @@ func (c *Configuration) GetFloatArray(option string) ([]float64, error) {
 func (c *Configuration) GetFloatArrayDefault(option string, dfault []float64) []float64 {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_FLOAT_TYPE {
+			if opt.ctype == _ArrayType|_FloatType {
 				return opt.value.([]float64)
 			}
 		}
@@ -421,7 +421,7 @@ func (c *Configuration) GetFloatArrayDefault(option string, dfault []float64) []
 func (c *Configuration) GetDateArray(option string) ([]time.Time, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_DATE_TYPE {
+			if opt.ctype == _ArrayType|_DateType {
 				return opt.value.([]time.Time), nil
 			}
 			return nil, fmt.Errorf("'%s': not an array of dates", option)
@@ -435,7 +435,7 @@ func (c *Configuration) GetDateArray(option string) ([]time.Time, error) {
 func (c *Configuration) GetDateArrayDefault(option string, dfault []time.Time) []time.Time {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_DATE_TYPE {
+			if opt.ctype == _ArrayType|_DateType {
 				return opt.value.([]time.Time)
 			}
 		}
@@ -449,7 +449,7 @@ func (c *Configuration) GetDateArrayDefault(option string, dfault []time.Time) [
 func (c *Configuration) GetStringArray(option string) ([]string, error) {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_STRING_TYPE {
+			if opt.ctype == _ArrayType|_StringType {
 				return opt.value.([]string), nil
 			}
 			return nil, fmt.Errorf("'%s': not an array of strings", option)
@@ -463,7 +463,7 @@ func (c *Configuration) GetStringArray(option string) ([]string, error) {
 func (c *Configuration) GetStringArrayDefault(option string, dfault []string) []string {
 	if c != nil {
 		if opt := c.getOption(option); opt != nil {
-			if opt.ctype == _ARRAY_TYPE|_STRING_TYPE {
+			if opt.ctype == _ArrayType|_StringType {
 				return opt.value.([]string)
 			}
 		}
@@ -523,21 +523,21 @@ func (c *Configuration) setValue(key string, rv reflect.Value) configurationValu
 	value := configurationValue{}
 
 	if rv.Type() == dateType {
-		value.ctype = _DATE_TYPE
+		value.ctype = _DateType
 		value.value = rv.Interface().(time.Time)
 	} else {
 		switch rv.Kind() {
 		case boolType:
-			value.ctype = _BOOL_TYPE
+			value.ctype = _BoolType
 			value.value = rv.Bool()
 		case intType:
-			value.ctype = _INT_TYPE
+			value.ctype = _IntType
 			value.value = rv.Int()
 		case floatType:
-			value.ctype = _FLOAT_TYPE
+			value.ctype = _FloatType
 			value.value = rv.Float()
 		case stringType:
-			value.ctype = _STRING_TYPE
+			value.ctype = _StringType
 			value.value = rv.String()
 		default:
 			panic(fmt.Sprintf("unexpected type '%s'", reflect.TypeOf(rv).Kind()))
@@ -549,7 +549,7 @@ func (c *Configuration) setValue(key string, rv reflect.Value) configurationValu
 func (c *Configuration) setArray(key string, rv reflect.Value) configurationValue {
 	value := configurationValue{}
 	if reflect.TypeOf(rv.Index(0).Interface()) == dateType {
-		value.ctype = _ARRAY_TYPE | _DATE_TYPE
+		value.ctype = _ArrayType | _DateType
 		a := []time.Time{}
 		for i := 0; i < rv.Len(); i++ {
 			a = append(a, rv.Index(i).Interface().(time.Time))
@@ -558,28 +558,28 @@ func (c *Configuration) setArray(key string, rv reflect.Value) configurationValu
 	} else {
 		switch reflect.ValueOf(rv.Index(0).Interface()).Kind() {
 		case boolType:
-			value.ctype = _ARRAY_TYPE | _BOOL_TYPE
+			value.ctype = _ArrayType | _BoolType
 			a := []bool{}
 			for i := 0; i < rv.Len(); i++ {
 				a = append(a, reflect.ValueOf(rv.Index(i).Interface()).Bool())
 			}
 			value.value = a
 		case intType:
-			value.ctype = _ARRAY_TYPE | _INT_TYPE
+			value.ctype = _ArrayType | _IntType
 			a := []int64{}
 			for i := 0; i < rv.Len(); i++ {
 				a = append(a, reflect.ValueOf(rv.Index(i).Interface()).Int())
 			}
 			value.value = a
 		case floatType:
-			value.ctype = _ARRAY_TYPE | _FLOAT_TYPE
+			value.ctype = _ArrayType | _FloatType
 			a := []float64{}
 			for i := 0; i < rv.Len(); i++ {
 				a = append(a, reflect.ValueOf(rv.Index(i).Interface()).Float())
 			}
 			value.value = a
 		case stringType:
-			value.ctype = _ARRAY_TYPE | _STRING_TYPE
+			value.ctype = _ArrayType | _StringType
 			a := []string{}
 			for i := 0; i < rv.Len(); i++ {
 				a = append(a, reflect.ValueOf(rv.Index(i).Interface()).String())
@@ -667,21 +667,21 @@ func valueToString(v reflect.Value) string {
 
 func (c configurationType) String() string {
 	prefix := ""
-	if c&_ARRAY_TYPE != 0 {
+	if c&_ArrayType != 0 {
 		prefix = "[]"
-		c = c ^ _ARRAY_TYPE
+		c = c ^ _ArrayType
 	}
 	typ := ""
 	switch c {
-	case _BOOL_TYPE:
+	case _BoolType:
 		typ = "bool"
-	case _INT_TYPE:
+	case _IntType:
 		typ = "int64"
-	case _FLOAT_TYPE:
+	case _FloatType:
 		typ = "float64"
-	case _DATE_TYPE:
+	case _DateType:
 		typ = "time.Time"
-	case _STRING_TYPE:
+	case _StringType:
 		typ = "string"
 	}
 	return prefix + typ
