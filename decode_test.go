@@ -22,7 +22,7 @@ func (ct *DecodeTests) cleanTestEnv(c *C) {
 
 // Decode(): nil structure.
 func (ct *DecodeTests) TestDecode1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	err := cfg.Decode("", nil)
 	c.Check(err, IsNil)
@@ -95,7 +95,7 @@ func (ct *DecodeTests) TestDecode5(c *C) {
 	c.Check(ct.config.Len(), Equals, 1)
 
 	type foo struct{}
-	var bar *foo = nil
+	var bar *foo
 
 	err := ct.config.Decode("values", bar)
 	c.Check(err, NotNil)
@@ -145,7 +145,7 @@ func (ct *DecodeTests) TestDecode7(c *C) {
 		}
 	)
 	var (
-		b bar = bar{
+		b = bar{
 			Fp: 314,
 		}
 	)
@@ -186,7 +186,7 @@ func (ct *DecodeTests) TestDecode8(c *C) {
 		}
 	)
 	var (
-		b bar = bar{
+		b = bar{
 			Fp: 314,
 		}
 	)
@@ -231,7 +231,7 @@ func (ct *DecodeTests) TestDecode9(c *C) {
 		}
 	)
 	var (
-		b bar = bar{
+		b = bar{
 			Fp: 314,
 		}
 	)

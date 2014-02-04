@@ -21,18 +21,18 @@ type (
 
 // NewParser instanciates a parser for given configuration file.
 func NewParser(filename string) (*Parser, error) {
-	if contents, err := ioutil.ReadFile(filename); err != nil {
+	contents, err := ioutil.ReadFile(filename)
+	if err != nil {
 		// Ok if file does not exists but report read errors.
 		if os.IsNotExist(err) == false {
 			return nil, err
 		}
 		return nil, nil
-	} else {
-		p := &Parser{
-			lexer: NewLexer(filename, string(contents)),
-		}
-		return p, nil
 	}
+	p := &Parser{
+		lexer: NewLexer(filename, string(contents)),
+	}
+	return p, nil
 }
 
 // NewStringParser instanciates a parser for given configuration string.
@@ -53,11 +53,10 @@ func (p *Parser) Parse(c *Configuration) (err *ConfigurationError) {
 				Column:   p.lexer.Token.Column,
 				msg:      p.lexer.Token.Value.(string),
 			}
-		} else {
-			for p.lexer.Token.Kind != TK_EOF {
-				if err := p.parseConfig(c, ""); err != nil {
-					return err
-				}
+		}
+		for p.lexer.Token.Kind != TK_EOF {
+			if err := p.parseConfig(c, ""); err != nil {
+				return err
 			}
 		}
 	}
@@ -192,7 +191,6 @@ func (p *Parser) parseArray(c *Configuration, section, option string) (err *Conf
 		}
 		skipEOL(p)
 	}
-	return nil
 }
 
 func (p *Parser) convertValue(dstValue interface{}, srcValue *token) (err *ConfigurationError) {
@@ -294,7 +292,7 @@ func (p *Parser) unexpectedError() (err *ConfigurationError) {
 	case TK_EQUAL, TK_LBRACKET, TK_RBRACKET, TK_COMMA:
 		kind = fmt.Sprintf("character '%s'", p.lexer.Token.Value)
 	default:
-		panic(fmt.Sprintf("unexpected kind %d", kind))
+		panic(fmt.Sprintf("unexpected kind %s", kind))
 	}
 
 	return &ConfigurationError{

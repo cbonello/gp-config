@@ -59,7 +59,7 @@ func (ct *ConfigTests) cleanTestEnv(c *C) {
 
 // Len().
 func (ct *ConfigTests) TestLen1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	l := cfg.Len()
 	c.Check(l, Equals, 0)
@@ -212,7 +212,7 @@ func (ct *ConfigTests) TestLoadString3(c *C) {
 
 // HasOption(): nil structure.
 func (ct *ConfigTests) TestHasOption1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	exists := cfg.HasOption("foo")
 	c.Check(exists, Equals, false)
@@ -346,7 +346,7 @@ string = ["Hello World!", "foo bar"]
 
 // IsSection(): nil structure.
 func (ct *ConfigTests) TestIsSection1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	section := cfg.IsSection("")
 	c.Check(section, Equals, false)
@@ -391,7 +391,7 @@ func (ct *ConfigTests) TestIsSection3(c *C) {
 
 // Options(): nil structure.
 func (ct *ConfigTests) TestOptions1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	options := cfg.Options("")
 	c.Check(len(options), Equals, 0)
@@ -445,7 +445,7 @@ foo = 1.0
 
 // Get(): nil structure.
 func (ct *ConfigTests) TestGet1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value, err := cfg.Get("")
 	c.Check(value, Equals, nil)
@@ -613,7 +613,7 @@ func (ct *ConfigTests) TestGet6(c *C) {
 
 // GetBool(): nil structure.
 func (ct *ConfigTests) TestGetBool1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value, err := cfg.GetBool("foo")
 	c.Check(value, Equals, bool(false))
@@ -722,7 +722,7 @@ boolean = true
 
 // GetBoolDefault(): nil structure.
 func (ct *ConfigTests) TestGetBoolDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value := cfg.GetBoolDefault("foo", false)
 	c.Check(value, Equals, false)
@@ -823,7 +823,7 @@ boolean = true
 
 // GetInt(): nil structure.
 func (ct *ConfigTests) TestGetInt1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetInt("foo")
 	c.Check(err, NotNil)
@@ -935,7 +935,7 @@ integer = 12
 
 // GetIntDefault(): nil structure.
 func (ct *ConfigTests) TestGetIntDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value := cfg.GetIntDefault("foo", 9)
 	c.Check(value, Equals, int64(9))
@@ -1036,7 +1036,7 @@ integer = 12
 
 // GetFloat(): nil structure.
 func (ct *ConfigTests) TestGetFloat1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value, err := cfg.GetFloat("foo")
 	c.Check(value, Equals, float64(0))
@@ -1145,7 +1145,7 @@ fp = 12.21
 
 // GetFloatDefault(): nil structure.
 func (ct *ConfigTests) TestGetFloatDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value := cfg.GetFloatDefault("foo", 9.)
 	c.Check(value, Equals, float64(9))
@@ -1246,7 +1246,7 @@ fp = 12.21
 
 // GetDate(): nil structure.
 func (ct *ConfigTests) TestGetDate1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetDate("foo")
 	c.Check(err, NotNil)
@@ -1357,7 +1357,7 @@ date = 2013-10-24T16:22:00Z
 
 // GetFloatDefault(): nil structure.
 func (ct *ConfigTests) TestGetDateDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	date, _ := time.Parse(time.RFC3339, "2013-10-24T16:22:00Z")
 	value := cfg.GetDateDefault("foo", date)
@@ -1468,7 +1468,7 @@ date = 2013-10-24T16:22:00Z
 
 // GetString(): nil structure.
 func (ct *ConfigTests) TestGetString1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetString("foo")
 	c.Check(err, NotNil)
@@ -1578,7 +1578,7 @@ string = "2013-10-24T16:22:00Z"
 
 // GetStringDefault(): nil structure.
 func (ct *ConfigTests) GetStringDefault(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	value := cfg.GetStringDefault("foo", "foo")
 	c.Check(value, Equals, "foo")
@@ -1679,7 +1679,7 @@ string = "2013-10-24T16:22:00Z"
 
 // GetBoolArray(): nil structure.
 func (ct *ConfigTests) TestGetBoolArray1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetBoolArray("foo")
 	c.Check(err, NotNil)
@@ -1788,7 +1788,7 @@ booleans = [false, false]
 
 // GetBoolArrayDefault(): nil structure.
 func (ct *ConfigTests) TestGGetBoolArrayDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	arr := []bool{true}
 	value := cfg.GetBoolArrayDefault("foo", arr)
@@ -1895,7 +1895,7 @@ booleans = [true, true]
 
 // GetIntArray(): nil structure.
 func (ct *ConfigTests) TestGetIntArray1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetIntArray("foo")
 	c.Check(err, NotNil)
@@ -2004,7 +2004,7 @@ integers = [1, 2]
 
 // GetIntArrayDefault(): nil structure.
 func (ct *ConfigTests) TestGetIntArrayDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	arr := []int64{9, 8}
 	value := cfg.GetIntArrayDefault("foo", arr)
@@ -2115,7 +2115,7 @@ integers = [1, -2]
 
 // GetFloatArray(): nil structure.
 func (ct *ConfigTests) TestGetFloatArray1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetFloatArray("foo")
 	c.Check(err, NotNil)
@@ -2228,7 +2228,7 @@ fps = [1.1, 2.2]
 
 // GetFloatArrayDefault(): nil structure.
 func (ct *ConfigTests) TestGetFloatArrayDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	arr := []float64{3.1415}
 	value := cfg.GetFloatArrayDefault("foo", arr)
@@ -2339,7 +2339,7 @@ fps = [-1.1, +2.2]
 
 // GetDateArray(): nil structure.
 func (ct *ConfigTests) TestGetDateArray1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetDateArray("foo")
 	c.Check(err, NotNil)
@@ -2452,7 +2452,7 @@ dates = [2012-10-24T16:22:00Z, 2013-10-24T16:22:00Z]
 
 // GetDateArrayDefault(): nil structure.
 func (ct *ConfigTests) TestGetDateArrayDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	expected, _ := time.Parse(time.RFC3339, "2012-10-24T16:22:00Z")
 	arr := []time.Time{expected}
@@ -2571,7 +2571,7 @@ dates = [2012-10-24T16:22:00Z, 2013-10-24T16:22:00Z]
 
 // GetStringArray(): nil structure.
 func (ct *ConfigTests) TestGetStringArray1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	_, err := cfg.GetStringArray("foo")
 	c.Check(err, NotNil)
@@ -2680,7 +2680,7 @@ strings = ["foo", "bar"]
 
 // GetStringArrayDefault(): nil structure.
 func (ct *ConfigTests) TestGetStringArrayDefault1(c *C) {
-	var cfg *config.Configuration = nil
+	var cfg *config.Configuration
 
 	arr := []string{"foo"}
 	value := cfg.GetStringArrayDefault("bar", arr)

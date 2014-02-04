@@ -252,9 +252,9 @@ foo = true`
 	c.Check(pt.parser.Parse(pt.config), IsNil)
 	c.Check(pt.config.Len(), Equals, 1)
 	c.Check(pt.config, HasKey, "test.foo")
-	test_foo, err := pt.config.GetBool("test.foo")
+	testFoo, err := pt.config.GetBool("test.foo")
 	c.Check(err, IsNil)
-	c.Check(test_foo, Equals, true)
+	c.Check(testFoo, Equals, true)
 }
 
 // Parse(): local options.
@@ -272,13 +272,13 @@ foo2 = false`
 	c.Check(pt.parser.Parse(pt.config), IsNil)
 	c.Check(pt.config.Len(), Equals, 2)
 	c.Check(pt.config, HasKey, "test.foo1")
-	test_foo1, err := pt.config.GetInt("test.foo1")
+	testFoo1, err := pt.config.GetInt("test.foo1")
 	c.Check(err, IsNil)
-	c.Check(test_foo1, Equals, int64(12))
+	c.Check(testFoo1, Equals, int64(12))
 	c.Check(pt.config, HasKey, "test.foo2")
-	test_foo2, err := pt.config.GetBool("test.foo2")
+	testFoo2, err := pt.config.GetBool("test.foo2")
 	c.Check(err, IsNil)
-	c.Check(test_foo2, Equals, false)
+	c.Check(testFoo2, Equals, false)
 }
 
 // Parse(): implicit float to int conmversion.
@@ -327,13 +327,13 @@ a = "new type and value"`
 	c.Check(pt.parser.Parse(pt.config), IsNil)
 	c.Check(pt.config.Len(), Equals, 2)
 	c.Check(pt.config, HasKey, "foo.a")
-	foo_a, err := pt.config.GetString("foo.a")
+	fooA, err := pt.config.GetString("foo.a")
 	c.Check(err, IsNil)
-	c.Check(foo_a, Equals, "new type and value")
+	c.Check(fooA, Equals, "new type and value")
 	c.Check(pt.config, HasKey, "bar.b")
-	bar_b, err := pt.config.GetInt("bar.b")
+	barB, err := pt.config.GetInt("bar.b")
 	c.Check(err, IsNil)
-	c.Check(bar_b, Equals, int64(3))
+	c.Check(barB, Equals, int64(3))
 }
 
 // Parse(): multiline arrays.
@@ -848,9 +848,9 @@ a = 13
 	a, err1 := pt.config.GetInt("a")
 	c.Check(err1, IsNil)
 	c.Check(a, Equals, int64(12))
-	a_a, err1 := pt.config.GetInt("a.a")
+	aA, err1 := pt.config.GetInt("a.a")
 	c.Check(err1, IsNil)
-	c.Check(a_a, Equals, int64(13))
+	c.Check(aA, Equals, int64(13))
 }
 
 // Parse(): parser error.
@@ -884,7 +884,7 @@ type hasKeyChecker struct {
 	*CheckerInfo
 }
 
-var HasKey Checker = &hasKeyChecker{
+var HasKey = &hasKeyChecker{
 	&CheckerInfo{Name: "HasKey", Params: []string{"map", "key"}},
 }
 

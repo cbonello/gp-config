@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 	"sort"
@@ -133,7 +132,7 @@ func (c *Configuration) Sections() (sections []string) {
 	if c != nil {
 		c.RLock()
 		defer c.RUnlock()
-		for s, _ := range c.sections {
+		for s := range c.sections {
 			sections = append(sections, s)
 		}
 		sort.Strings(sections)
@@ -147,7 +146,7 @@ func (c *Configuration) IsSection(section string) bool {
 		c.RLock()
 		defer c.RUnlock()
 		section = strings.ToLower(section)
-		for s, _ := range c.sections {
+		for s := range c.sections {
 			if section == s {
 				return true
 			}
@@ -166,13 +165,13 @@ func (c *Configuration) Options(section string) (options []string) {
 		defer c.RUnlock()
 		if section = strings.ToLower(section); section == "" {
 			// Look for options defined outside of a section.
-			for o, _ := range c.options {
+			for o := range c.options {
 				if strings.Index(o, ".") == -1 {
 					options = append(options, o)
 				}
 			}
 		} else {
-			for o, _ := range c.options {
+			for o := range c.options {
 				if strings.HasPrefix(o, section) {
 					options = append(options, o)
 				}
@@ -192,7 +191,7 @@ func (c *Configuration) Get(option string) (interface{}, error) {
 			return opt.value, nil
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return nil, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetBool returns the boolean value associated with given option name. An
@@ -204,10 +203,10 @@ func (c *Configuration) GetBool(option string) (bool, error) {
 			if opt.ctype == _BOOL_TYPE {
 				return opt.value.(bool), nil
 			}
-			return false, errors.New(fmt.Sprintf("'%s': not a boolean", option))
+			return false, fmt.Errorf("'%s': not a boolean", option)
 		}
 	}
-	return false, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return false, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetBoolDefault is similar to GetBool but given default value is returned
@@ -231,10 +230,10 @@ func (c *Configuration) GetInt(option string) (int64, error) {
 			if opt.ctype == _INT_TYPE {
 				return opt.value.(int64), nil
 			}
-			return 0, errors.New(fmt.Sprintf("'%s': not an integer", option))
+			return 0, fmt.Errorf("'%s': not an integer", option)
 		}
 	}
-	return 0, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return 0, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetIntDefault is similar to GetInt but given default value is returned
@@ -259,11 +258,10 @@ func (c *Configuration) GetFloat(option string) (float64, error) {
 			if opt.ctype == _FLOAT_TYPE {
 				return opt.value.(float64), nil
 			}
-			return 0, errors.New(
-				fmt.Sprintf("'%s': not a floating-point number", option))
+			return 0, fmt.Errorf("'%s': not a floating-point number", option)
 		}
 	}
-	return 0, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return 0, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetFloatDefault is similar to GetFloat but given default value is returned
@@ -287,11 +285,10 @@ func (c *Configuration) GetDate(option string) (time.Time, error) {
 			if opt.ctype == _DATE_TYPE {
 				return opt.value.(time.Time), nil
 			}
-			return time.Now(), errors.New(
-				fmt.Sprintf("'%s': not a date", option))
+			return time.Now(), fmt.Errorf("'%s': not a date", option)
 		}
 	}
-	return time.Now(), errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return time.Now(), fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetDateDefault is similar to GetDate but given default value is returned
@@ -315,10 +312,10 @@ func (c *Configuration) GetString(option string) (string, error) {
 			if opt.ctype == _STRING_TYPE {
 				return opt.value.(string), nil
 			}
-			return "", errors.New(fmt.Sprintf("'%s': not a string", option))
+			return "", fmt.Errorf("'%s': not a string", option)
 		}
 	}
-	return "", errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return "", fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetStringDefault is similar to GetString but given default value is returned
@@ -343,11 +340,10 @@ func (c *Configuration) GetBoolArray(option string) ([]bool, error) {
 			if opt.ctype == _ARRAY_TYPE|_BOOL_TYPE {
 				return opt.value.([]bool), nil
 			}
-			return nil, errors.New(
-				fmt.Sprintf("'%s': not an array of booleans", option))
+			return nil, fmt.Errorf("'%s': not an array of booleans", option)
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return nil, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetBoolArrayDefault is similar to GetBoolArray but given default value is
@@ -372,11 +368,10 @@ func (c *Configuration) GetIntArray(option string) ([]int64, error) {
 			if opt.ctype == _ARRAY_TYPE|_INT_TYPE {
 				return opt.value.([]int64), nil
 			}
-			return nil, errors.New(
-				fmt.Sprintf("'%s': not an array of integers", option))
+			return nil, fmt.Errorf("'%s': not an array of integers", option)
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return nil, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetIntArrayDefault is similar to GetIntArray but given default value is
@@ -401,11 +396,10 @@ func (c *Configuration) GetFloatArray(option string) ([]float64, error) {
 			if opt.ctype == _ARRAY_TYPE|_FLOAT_TYPE {
 				return opt.value.([]float64), nil
 			}
-			return nil, errors.New(
-				fmt.Sprintf("'%s': not an array of floating-point numbers", option))
+			return nil, fmt.Errorf("'%s': not an array of floating-point numbers", option)
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return nil, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetFloatArrayDefault is similar to GetFloatArray but given default value
@@ -430,11 +424,10 @@ func (c *Configuration) GetDateArray(option string) ([]time.Time, error) {
 			if opt.ctype == _ARRAY_TYPE|_DATE_TYPE {
 				return opt.value.([]time.Time), nil
 			}
-			return nil, errors.New(
-				fmt.Sprintf("'%s': not an array of dates", option))
+			return nil, fmt.Errorf("'%s': not an array of dates", option)
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return nil, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetDateArrayDefault is similar to GetDateArray but given default value
@@ -459,11 +452,10 @@ func (c *Configuration) GetStringArray(option string) ([]string, error) {
 			if opt.ctype == _ARRAY_TYPE|_STRING_TYPE {
 				return opt.value.([]string), nil
 			}
-			return nil, errors.New(
-				fmt.Sprintf("'%s': not an array of strings", option))
+			return nil, fmt.Errorf("'%s': not an array of strings", option)
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("'%s': unknown option", option))
+	return nil, fmt.Errorf("'%s': unknown option", option)
 }
 
 // GetStringArrayDefault is similar to GetStringArray but given default value
@@ -671,7 +663,6 @@ func valueToString(v reflect.Value) string {
 	default:
 		panic(fmt.Sprintf("unexpected type '%s'", reflect.TypeOf(v).Kind()))
 	}
-	return ""
 }
 
 func (c configurationType) String() string {

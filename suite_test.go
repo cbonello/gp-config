@@ -15,7 +15,7 @@ type equalSliceChecker struct {
 	*CheckerInfo
 }
 
-var EqualSlice Checker = &equalSliceChecker{
+var EqualSlice = &equalSliceChecker{
 	&CheckerInfo{Name: "EqualSlice", Params: []string{"sliceObtained", "sliceExpected"}},
 }
 

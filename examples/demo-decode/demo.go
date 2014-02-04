@@ -59,7 +59,7 @@ func main() {
 	// Simulate debug or production run.
 	debug := (random(1, 10) < 6)
 	if debug {
-		fmt.Println("DEBUG MODE\n")
+		fmt.Println("DEBUG MODE")
 		// Override default options with debug mode settings.
 		if err := cfg.LoadFile("debug.cfg"); err != nil {
 			fmt.Printf("error: %s: %d:%d: %s\n",
@@ -67,7 +67,7 @@ func main() {
 			os.Exit(1)
 		}
 	} else {
-		fmt.Println("PRODUCTION MODE\n")
+		fmt.Println("PRODUCTION MODE")
 	}
 
 	version := cfg.GetIntArrayDefault("version", []int64{0, 0, 1})
